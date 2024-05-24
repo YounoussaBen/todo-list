@@ -35,9 +35,9 @@ function TaskCard({
       <div className="list">
 
         {taskWithStatus.map((task) => (
-          <>
-            <div className="backgroundTasks">
-              <div key={task.title} className="task">
+
+            <div key={task.title} className="backgroundTasks">
+              <div  className="task">
                 <button
                   className="checkContainer"
                   onClick={() => toggleTaskCompletedById(task?.id)}
@@ -77,7 +77,7 @@ function TaskCard({
                 </div>
               </div>
             </div>
-          </>
+  
         ))}
       </div>
     </section>

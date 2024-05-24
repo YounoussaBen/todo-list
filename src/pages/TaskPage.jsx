@@ -3,8 +3,8 @@ import Header from "../components/Header";
 import HeaderButton from "../components/HeaderButton";
 import TaskCard from "../components/TaskCard";
 import TaskModal from "../components/TaskModal";
-
 import { message } from "antd";
+import ChartTask from "../components/ChartTask";
 
 const LOCAL_STORAGE_KEY = "todo:tasks";
 
@@ -157,7 +157,9 @@ export function TaskPage() {
   const calculateTimeLeft = () => {
 
     const endDateTime = new Date(`${endDate}T${endTime}`);
+    console.log("endDateTime" ,endDateTime)
     const now = new Date();
+    console.log("now" ,now)
     const difference = endDateTime - now;
     console.log("difference", difference)
     let timeLeft = {};
@@ -239,7 +241,9 @@ export function TaskPage() {
         dayLeft={dayLeft}
       />
       
-
+      <div className="centerChart">
+      <ChartTask />
+      </div>
     </>
   );
 }
