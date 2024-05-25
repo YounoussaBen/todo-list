@@ -1,9 +1,12 @@
-
-
-.centerChart {
-    padding: 40px 70px;
-    margin: auto;
+.chart{
     text-align: center;
-    align-items: center;
-    justify-content: center;
+    width: 50%;
+}
+@media(max-width:1000px) {
+    .chart{
+        width: 100%;
+        margin: auto;
+        align-items: center;
+        justify-content: center;
+    }
 }

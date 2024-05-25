@@ -6,6 +6,7 @@ import TaskModal from "../components/TaskModal";
 import { message } from "antd";
 import ChartTask from "../components/ChartTask";
 
+
 const LOCAL_STORAGE_KEY = "todo:tasks";
 
 export function TaskPage() {
@@ -24,7 +25,7 @@ export function TaskPage() {
   const [tempTask, setTempTask] = useState(null);
   const completedTasks = tasks.filter((task) => task.isCompleted).length;
   const tasksQuantity = tasks.length;
-  const [dayLeft, setDayLeft] = useState(null)
+  const [dayLeft, setDayLeft] = useState(null);
 
   function loadSavedTasks() {
     const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -35,11 +36,11 @@ export function TaskPage() {
 
   function showModal() {
     setIsModalOpen(true);
-    calculateTimeLeft()
+    calculateTimeLeft();
   }
 
   function handleUpdate(task) {
-    showModal()
+    showModal();
     setUpdateIsModalOpen(true);
     setTempTask(task);
     setTitle(task?.title);
@@ -51,7 +52,7 @@ export function TaskPage() {
   }
 
   function handleReview(task) {
-    showModal()
+    showModal();
     setIsReviewOpen(true);
     setTempTask(task);
     setTitle(task?.title);
@@ -118,23 +119,24 @@ export function TaskPage() {
   }
 
   function handleSubmit() {
-
-    if (title === "" || startDate === "" || startTime === "" ||
-      endDate === "" || endTime === ""
+    if (
+      title === "" ||
+      startDate === "" ||
+      startTime === "" ||
+      endDate === "" ||
+      endTime === ""
     ) {
-      message.warning("field required")
+      message.warning("field required");
     } else {
       addTask(title, note, startDate, startTime, endDate, endTime);
       closeModal();
     }
   }
 
-
   function deleteTaskById(taskId) {
     const newTasks = tasks.filter((task) => task.id !== taskId);
     setTasksAndSave(newTasks);
   }
-
 
   function toggleTaskCompletedById(taskId) {
     const newTasks = tasks.map((task) => {
@@ -151,17 +153,16 @@ export function TaskPage() {
 
   const getTodayDate = () => {
     const today = new Date();
-    return today.toISOString().split('T')[0];
-  }
+    return today.toISOString().split("T")[0];
+  };
 
   const calculateTimeLeft = () => {
-
     const endDateTime = new Date(`${endDate}T${endTime}`);
-    console.log("endDateTime" ,endDateTime)
+    console.log("endDateTime", endDateTime);
     const now = new Date();
-    console.log("now" ,now)
+    console.log("now", now);
     const difference = endDateTime - now;
-    console.log("difference", difference)
+    console.log("difference", difference);
     let timeLeft = {};
 
     if (difference > 0) {
@@ -176,10 +177,9 @@ export function TaskPage() {
     return setDayLeft(timeLeft);
   };
 
-
   function updateTask() {
     if (title === "" || endDate === "" || startDate === "") {
-      message.warning("field required")
+      message.warning("field required");
     } else {
       const newTasks = tasks.map((task) => {
         if (task.id == tempTask?.id) {
@@ -205,44 +205,46 @@ export function TaskPage() {
 
   return (
     <>
-      <Header />
-      <HeaderButton setChangeValue={setChangeValue} showModal={showModal} />
-      <TaskCard
-        tasks={tasks}
-        tasksQuantity={tasksQuantity}
-        completedTasks={completedTasks}
-        taskWithStatus={taskWithStatus}
-        toggleTaskCompletedById={toggleTaskCompletedById}
-        handleReview={handleReview}
-        deleteTaskById={deleteTaskById}
-        handleUpdate={handleUpdate}
-      />
+      <div className="taskPage">
+        <div className="todo">
+          <Header />
+          <HeaderButton setChangeValue={setChangeValue} showModal={showModal} />
+          <TaskCard
+            tasks={tasks}
+            tasksQuantity={tasksQuantity}
+            completedTasks={completedTasks}
+            taskWithStatus={taskWithStatus}
+            toggleTaskCompletedById={toggleTaskCompletedById}
+            handleReview={handleReview}
+            deleteTaskById={deleteTaskById}
+            handleUpdate={handleUpdate}
+          />
 
-      <TaskModal
-        closeModal={closeModal}
-        isModalOpen={isModalOpen}
-        isUpdateModalOpen={isUpdateModalOpen}
-        isReviewOpen={isReviewOpen}
-        handleSubmit={handleSubmit}
-        updateTask={updateTask}
-        title={title}
-        setTitle={setTitle}
-        note={note}
-        setNote={setNote}
-        startDate={startDate}
-        setStartDate={setStartDate}
-        startTime={startTime}
-        setStartTime={setStartTime}
-        endDate={endDate}
-        setEndDate={setEndDate}
-        endTime={endTime}
-        setEndTime={setEndTime}
-        getTodayDate={getTodayDate}
-        dayLeft={dayLeft}
-      />
-      
-      <div className="centerChart">
-      <ChartTask />
+          <TaskModal
+            closeModal={closeModal}
+            isModalOpen={isModalOpen}
+            isUpdateModalOpen={isUpdateModalOpen}
+            isReviewOpen={isReviewOpen}
+            handleSubmit={handleSubmit}
+            updateTask={updateTask}
+            title={title}
+            setTitle={setTitle}
+            note={note}
+            setNote={setNote}
+            startDate={startDate}
+            setStartDate={setStartDate}
+            startTime={startTime}
+            setStartTime={setStartTime}
+            endDate={endDate}
+            setEndDate={setEndDate}
+            endTime={endTime}
+            setEndTime={setEndTime}
+            getTodayDate={getTodayDate}
+            dayLeft={dayLeft}
+          />
+        </div>
+
+        <ChartTask />
       </div>
     </>
   );

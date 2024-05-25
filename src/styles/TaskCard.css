@@ -25,10 +25,14 @@
   gap: 8px;
 }
 
-.title p {
+.title p{
   font-size: 14px;
   font-weight: bold;
   margin-top: 12px;
+}
+.title span {
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .task {
@@ -86,11 +90,17 @@
   }
 
 
-@media(min-width:150px) and (max-width : 700px) {
+@media(min-width:150px) and (max-width : 1000px) {
   .task p {
-    font-size: 14px;
+    font-size: 12px;
   }
   .tasks {
     margin-top: 0;
   }
+  .title p, .title span {
+    font-size: 10px;
+  }
+  /* .title p{
+    margin-top: 18px;
+  } */
 }

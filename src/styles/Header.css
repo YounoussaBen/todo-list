@@ -8,10 +8,36 @@
     text-transform: uppercase;
     margin-bottom: 0;
 }
+.taskPage{
+    display: flex;
+    height: 90vh;
+    width: 90%;
+    justify-content: space-between;
+    padding: 1rem 0;
+    margin: auto;
+    
+}
+.todo{
+    width: 40%;
+}
 @media(max-width:600px) {
     .header {
         margin-top: 60px;
         font-size: 20px;
-    }  
-    
+    }    
+}
+@media(max-width:1000px) {
+    .taskPage{
+        display: block;
+        align-items: center;
+        justify-content: center;
+        margin: auto;
+        width: 100%;
+    }
+    .todo{
+        width: 100%;
+        margin: auto;
+        align-items: center;
+        justify-content: center;
+    }
 }

@@ -5,13 +5,12 @@ import { Button, Form } from "react-bootstrap";
 function HeaderButton({setChangeValue, showModal}) {
   return (
     <div className="inputTask">
-      <Button className="px-4" onClick={showModal}>
+      <Button className="px-4 h-75 my-auto" onClick={showModal}>
         Add task
       </Button>
 
       <Button variant="none">
         <Form.Select
-          className="pb-2 pt-2 w-100"
           id="select"
           onClick={(e) => setChangeValue(e.target.value)}
         >
