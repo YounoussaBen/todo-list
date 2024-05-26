@@ -1,12 +1,42 @@
-.chart{
+.chartContainer{
     text-align: center;
-    width: 50%;
+    width: 40%;
+    align-items: center;
 }
-@media(max-width:1000px) {
-    .chart{
-        width: 100%;
+
+.chartHeader {
+    margin-bottom: 30px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    margin-top: 80px;
+    color: #1560bd;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.chartTitle {
+    font-size: 14px;
+  font-weight: bold;
+  margin-top: 12px;
+}
+@media(max-width:600px) {
+    .chartHeader {
+        margin-top: 60px;
+        font-size: 20px;
+    }    
+}
+
+@media(max-width:900px) {
+    .chartContainer{
+        width: 90%;
         margin: auto;
         align-items: center;
         justify-content: center;
+    }
+}
+@media(min-width:150px) and (max-width : 1000px) {
+    .chartTitle {
+      font-size: 12px;
     }
 }

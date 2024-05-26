@@ -5,7 +5,7 @@ import TaskCard from "../components/TaskCard";
 import TaskModal from "../components/TaskModal";
 import { message } from "antd";
 import ChartTask from "../components/ChartTask";
-
+import Essay from "../components/Essay";
 
 const LOCAL_STORAGE_KEY = "todo:tasks";
 
@@ -25,7 +25,8 @@ export function TaskPage() {
   const [tempTask, setTempTask] = useState(null);
   const completedTasks = tasks.filter((task) => task.isCompleted).length;
   const tasksQuantity = tasks.length;
-  const [dayLeft, setDayLeft] = useState(null);
+  // const [dayLeft, setDayLeft] = useState(null);
+  // const [Difference_In_Days, setDifference_In_Days] = useState(null)
 
   function loadSavedTasks() {
     const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -34,9 +35,14 @@ export function TaskPage() {
     }
   }
 
+  function setTasksAndSave(newTasks) {
+    setTasks(newTasks);
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newTasks));
+  }
+
   function showModal() {
     setIsModalOpen(true);
-    calculateTimeLeft();
+    // calculateTimeLeft();
   }
 
   function handleUpdate(task) {
@@ -74,11 +80,6 @@ export function TaskPage() {
     setNote("");
   };
 
-  function setTasksAndSave(newTasks) {
-    setTasks(newTasks);
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newTasks));
-  }
-
   const taskWithStatus = tasks.filter((item) => {
     if (selectedStatus === "complete") {
       return item.isCompleted === true;
@@ -98,10 +99,11 @@ export function TaskPage() {
   function addTask(
     taskTitle,
     taskNote,
-    taskStartTime,
     taskStartDate,
+    taskStartTime,
     taskEndDate,
-    taskEndTime
+    taskEndTime,
+    // dayLeft
   ) {
     setTasksAndSave([
       ...tasks,
@@ -113,6 +115,7 @@ export function TaskPage() {
         startTime: taskStartTime,
         endDate: taskEndDate,
         endTime: taskEndTime,
+        // dayLeft,
         isCompleted: false,
       },
     ]);
@@ -126,9 +129,10 @@ export function TaskPage() {
       endDate === "" ||
       endTime === ""
     ) {
-      message.warning("field required");
+      message.warning("fields required");
     } else {
       addTask(title, note, startDate, startTime, endDate, endTime);
+      console.log("startTime is here", addTask);
       closeModal();
     }
   }
@@ -156,29 +160,32 @@ export function TaskPage() {
     return today.toISOString().split("T")[0];
   };
 
-  const calculateTimeLeft = () => {
-    const endDateTime = new Date(`${endDate}T${endTime}`);
-    console.log("endDateTime", endDateTime);
-    const now = new Date();
-    console.log("now", now);
-    const difference = endDateTime - now;
-    console.log("difference", difference);
-    let timeLeft = {};
+  // function calculateDifference () {
+  //   // const date1 = new Date({startDate});
+  //   // const date2 = new Date(endDate);
 
-    if (difference > 0) {
-      timeLeft = {
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
-      };
-    }
+  //   // Calculating the time difference of two dates
+  //   const Difference_In_Time = endDate.getTime() - startDate.getTime();
 
-    return setDayLeft(timeLeft);
-  };
+  //   // Calculating the number of days between two dates
+  //   const Difference_In_Days = Math.round(
+  //     Difference_In_Time / (1000 * 3600 * 24)
+  //   );
+
+  //   if(Difference_In_Days < 0) {
+  //     message.error("expired")
+  //   }
+  //   return setDifference_In_Days(Difference_In_Days);
+  // }
 
   function updateTask() {
-    if (title === "" || endDate === "" || startDate === "") {
+    if (
+      title === "" ||
+      endDate === "" ||
+      startDate === "" ||
+      endTime === "" ||
+      endDate === ""
+    ) {
       message.warning("field required");
     } else {
       const newTasks = tasks.map((task) => {
@@ -192,6 +199,7 @@ export function TaskPage() {
             startTime: startTime,
             endDate: endDate,
             endTime: endTime,
+            // dayLeft: dayLeft,
           };
         }
         return task;
@@ -240,12 +248,16 @@ export function TaskPage() {
             endTime={endTime}
             setEndTime={setEndTime}
             getTodayDate={getTodayDate}
-            dayLeft={dayLeft}
+            // dayLeft={dayLeft}
+            // Difference_In_Days = {Difference_In_Days}
+            // calculateDifference={calculateDifference}
           />
         </div>
 
         <ChartTask />
       </div>
+
+      {/* <Essay /> */}
     </>
   );
 }

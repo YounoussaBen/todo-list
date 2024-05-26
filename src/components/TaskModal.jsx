@@ -24,10 +24,11 @@ function TaskModal({
   endTime,
   setEndTime,
   getTodayDate,
-  // dayLeft
+  // Difference_In_Days,
+  // calculateDifference
 }) {
 
-  // console.log("days left", dayLeft)
+  // console.log("days left", Difference_In_Days)
 
   // console.log("taskModal")
   // const handleStartDateChange = (event) => setStartDate(event.target.value);
@@ -125,10 +126,9 @@ function TaskModal({
             ) : (
               <Form.Control
                 type="date"
-                name="StartDate"
                 value={startDate}
-                min={getTodayDate()}
                 onChange={(e) => setStartDate(e.target.value)}
+                min={getTodayDate()}
               />
             )}
           </Form.Group>
@@ -147,7 +147,6 @@ function TaskModal({
             ) : (
               <Form.Control
                 type="time"
-                name="StartTime"
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
               />
@@ -173,7 +172,6 @@ function TaskModal({
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
                 min={startDate || getTodayDate()}
-                disabled={!startDate}
               />
             )}
           </Form.Group>
@@ -200,7 +198,8 @@ function TaskModal({
           </Form.Group>
         </div>
 
-        {/* <p>Days left: <span>{dayLeft}</span> </p> */}
+        {/* <button onClick={calculateDifference}>Calculate Difference</button>
+        <p>Days left: <span>{Difference_In_Days}</span> </p> */}
       </Form>
     </Modal>
   );
