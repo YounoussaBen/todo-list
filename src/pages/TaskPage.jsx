@@ -23,10 +23,9 @@ export function TaskPage() {
   const [endTime, setEndTime] = useState("");
   const [tasks, setTasks] = useState([]);
   const [tempTask, setTempTask] = useState(null);
+
   const completedTasks = tasks.filter((task) => task.isCompleted).length;
   const tasksQuantity = tasks.length;
-  // const [dayLeft, setDayLeft] = useState(null);
-  // const [Difference_In_Days, setDifference_In_Days] = useState(null)
 
   function loadSavedTasks() {
     const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -42,7 +41,6 @@ export function TaskPage() {
 
   function showModal() {
     setIsModalOpen(true);
-    // calculateTimeLeft();
   }
 
   function handleUpdate(task) {
@@ -55,6 +53,10 @@ export function TaskPage() {
     setStartTime(task?.startTime);
     setEndDate(task?.endDate);
     setEndTime(task?.endTime);
+
+    // Calculate and set the day left
+    const daysLeft = calculateDifference(task.startDate, task.endDate);
+    task.dayLeft = daysLeft;
   }
 
   function handleReview(task) {
@@ -67,7 +69,12 @@ export function TaskPage() {
     setStartTime(task?.startTime);
     setEndDate(task?.endDate);
     setEndTime(task?.endTime);
+
+    // Calculate and set the day left
+    const daysLeft = calculateDifference(task.startDate, task.endDate);
+    task.dayLeft = daysLeft;
   }
+
   const closeModal = () => {
     setIsModalOpen(false);
     setUpdateIsModalOpen(false);
@@ -92,8 +99,6 @@ export function TaskPage() {
 
   useEffect(() => {
     loadSavedTasks();
-
-    // getFiltered()
   }, [selectedStatus]);
 
   function addTask(
@@ -102,9 +107,10 @@ export function TaskPage() {
     taskStartDate,
     taskStartTime,
     taskEndDate,
-    taskEndTime,
-    // dayLeft
+    taskEndTime
   ) {
+    const dayLeft = calculateDifference(taskStartDate, taskEndDate);
+    
     setTasksAndSave([
       ...tasks,
       {
@@ -115,7 +121,7 @@ export function TaskPage() {
         startTime: taskStartTime,
         endDate: taskEndDate,
         endTime: taskEndTime,
-        // dayLeft,
+        dayLeft: dayLeft,
         isCompleted: false,
       },
     ]);
@@ -132,7 +138,6 @@ export function TaskPage() {
       message.warning("fields required");
     } else {
       addTask(title, note, startDate, startTime, endDate, endTime);
-      console.log("startTime is here", addTask);
       closeModal();
     }
   }
@@ -160,23 +165,26 @@ export function TaskPage() {
     return today.toISOString().split("T")[0];
   };
 
-  // function calculateDifference () {
-  //   // const date1 = new Date({startDate});
-  //   // const date2 = new Date(endDate);
+  function calculateDifference(startDate, endDate) {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
 
-  //   // Calculating the time difference of two dates
-  //   const Difference_In_Time = endDate.getTime() - startDate.getTime();
+    if (isNaN(start) || isNaN(end)) {
+      return null;
+    }
 
-  //   // Calculating the number of days between two dates
-  //   const Difference_In_Days = Math.round(
-  //     Difference_In_Time / (1000 * 3600 * 24)
-  //   );
+    const Difference_In_Time = end.getTime() - start.getTime();
+    const Difference_In_Days = Math.round(Difference_In_Time / (1000 * 3600 * 24));
 
-  //   if(Difference_In_Days < 0) {
-  //     message.error("expired")
-  //   }
-  //   return setDifference_In_Days(Difference_In_Days);
-  // }
+    if (Difference_In_Days < 0) {
+      message.error("expired");
+      return null;
+    } else {
+      message.info(`You have ${Difference_In_Days} day(s) left`);
+    }
+
+    return Difference_In_Days;
+  }
 
   function updateTask() {
     if (
@@ -188,8 +196,9 @@ export function TaskPage() {
     ) {
       message.warning("field required");
     } else {
-      const newTasks = tasks.map((task) => {
+      const updatedTask = tasks.map((task) => {
         if (task.id == tempTask?.id) {
+          const dayLeft = calculateDifference(startDate, endDate);
           return {
             ...task,
             isCompleted: tempTask.isCompleted,
@@ -199,13 +208,13 @@ export function TaskPage() {
             startTime: startTime,
             endDate: endDate,
             endTime: endTime,
-            // dayLeft: dayLeft,
+            dayLeft: dayLeft,
           };
         }
         return task;
       });
 
-      setTasksAndSave(newTasks);
+      setTasksAndSave(updatedTask);
       message.success("Task Updated successfully");
       closeModal();
     }
@@ -248,9 +257,8 @@ export function TaskPage() {
             endTime={endTime}
             setEndTime={setEndTime}
             getTodayDate={getTodayDate}
-            // dayLeft={dayLeft}
-            // Difference_In_Days = {Difference_In_Days}
-            // calculateDifference={calculateDifference}
+            // Difference_In_Days added to pass daysLeft to the TaskModal
+            differenceInDays={tempTask?.dayLeft}
           />
         </div>
 
